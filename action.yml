@@ -3,25 +3,10 @@ description: >-
   Useful to push files to another repository to be used, for example, via github
   pages
 inputs:
-  source-before-directory:
-    description: Source before directory from the origin directory
-    required: false
-  source-directory:
-    description: Source directory from the origin directory
-    required: true
-  destination-github-username:
-    description: Name of the destination username/organization
-    required: true
-  destination-repository-name:
-    description: Destination repository
-    required: true
+
   user-email:
     description: Email for the git commit
     required: true
-  github-server:
-    description: 'Github server'
-    default: 'github.com'
-    required: false
   user-name:
     description: >-
       [Optional] Name for the git commit. Defaults to the destination
@@ -32,6 +17,35 @@ inputs:
     description: '[Optional] Username/organization for the destination repository'
     required: false
     default: ''
+  api-specs-branch:
+    description: the branch of qingcloud-api-specs to sync
+    required: false
+    default: 'master'
+  branch-sdk-main:
+    description: the base branch of qingcloud-sdk
+    required: false
+    default: 'master'
+  branch-sdk-sync:
+    description: the branch of qingcloud-sdk which will push
+    required: false
+    default: 'api-specs-sync'
+  api-specs-repository-name:
+    description: the repository name of qingcloud-api-specs
+    required: false
+    default: 'qingcloud-api-specs'
+  java-sdk-repository-name:
+    description: the repository name of qingcloud-sdk-java
+    required: false
+    default: 'qingcloud-sdk-java'
+  go-sdk-repository-name:
+    description: the repository name of qingcloud-sdk-go
+    required: false
+    default: 'qingcloud-sdk-go'
+  ruby-sdk-repository-name:
+    description: the repository name of qingcloud-sdk-ruby
+    required: false
+    default: 'qingcloud-sdk-ruby'
+
   target-branch:
     description: >-
       [Optional] set target branch name for the destination repository. Defaults
@@ -44,26 +58,23 @@ inputs:
       replaced by the URL@commit in the origin repo
     default: Update from ORIGIN_COMMIT
     required: false
-  target-directory:
-    description: '[Optional] The directory to wipe and replace in the target repository'
-    default: ''
-    required: false
         
 runs:
   using: docker
   image: Dockerfile
   args:
-    - '${{ inputs.source-before-directory }}'
-    - '${{ inputs.source-directory }}'
-    - '${{ inputs.destination-github-username }}'
-    - '${{ inputs.destination-repository-name }}'
-    - '${{ inputs.github-server }}'
     - '${{ inputs.user-email }}'
     - '${{ inputs.user-name }}'
     - '${{ inputs.destination-repository-username }}'
-    - '${{ inputs.target-branch }}'
+    - '${{ inputs.api-specs-branch }}'
+    - '${{ inputs.branch-sdk-main }}'
+    - '${{ inputs.branch-sdk-sync }}'
+    - '${{ inputs.api-specs-repository-name }}'
+    - '${{ inputs.java-sdk-repository-name }}'
+    - '${{ inputs.go-sdk-repository-name }}'
+    - '${{ inputs.ruby-sdk-repository-name }}'
     - '${{ inputs.commit-message }}'
-    - '${{ inputs.target-directory }}'
+
 branding:
   icon: git-commit
   color: green
