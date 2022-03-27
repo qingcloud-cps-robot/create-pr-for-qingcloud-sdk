@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-
+ENV  TZ=Asia/Shanghai
 RUN  apt-get update
 RUN  apt-get install -y git
 RUN  apt-get install -y wget
