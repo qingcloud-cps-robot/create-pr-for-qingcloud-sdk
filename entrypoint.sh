@@ -22,8 +22,8 @@ TARGET_REPOSITORY_NAME_RUBY_SDK="${10}"
 COMMIT_MESSAGE="${11}"
 
 ORIGIN_COMMIT="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
-# COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
-# COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
+COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
+COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 
 CLONE_DIR=$(mktemp -d)
 
@@ -37,22 +37,19 @@ git clone --single-branch --branch "$TARGET_API_SPECS_BRANCH" "https://$USER_NAM
 
 ls -la "$CLONE_DIR/$TARGET_REPOSITORY_NAME_API_SPECS"
 
+
 echo "[+] Cloning $TARGET_REPOSITORY_NAME_JAVA_SDK"
 cd $CLONE_DIR
 mkdir $TARGET_REPOSITORY_NAME_JAVA_SDK
 git clone --single-branch --branch "$TARGET_BRANCH_SDK_SYNC" "https://$USER_NAME:$API_TOKEN_GITHUB@github.com/$DESTINATION_REPOSITORY_USERNAME/$TARGET_REPOSITORY_NAME_JAVA_SDK.git" "$CLONE_DIR/$TARGET_REPOSITORY_NAME_JAVA_SDK"
-
 
 ls -la $CLONE_DIR/$TARGET_REPOSITORY_NAME_JAVA_SDK
 
 echo "[+] Update $TARGET_REPOSITORY_NAME_JAVA_SDK by snips"
 snips -f $CLONE_DIR/$TARGET_REPOSITORY_NAME_API_SPECS/2013-08-30/swagger/api_v2.0.json -t $CLONE_DIR/$TARGET_REPOSITORY_NAME_JAVA_SDK/tmpl -o $CLONE_DIR/$TARGET_REPOSITORY_NAME_JAVA_SDK/src/main/java/com/qingcloud/sdk/service/
 
-
 echo "[+] Push $TARGET_REPOSITORY_NAME_JAVA_SDK to $TARGET_BRANCH_SDK_SYNC"
-
 cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_JAVA_SDK"
-
 
 echo "[+] Files that will be pushed"
 ls -la
@@ -71,21 +68,19 @@ echo "[+] Pushing git commit"
 # --set-upstream: sets de branch when pushing to a branch that does not exist
 git push "https://$USER_NAME:$API_TOKEN_GITHUB@github.com/$DESTINATION_REPOSITORY_USERNAME/$TARGET_REPOSITORY_NAME_JAVA_SDK.git" --set-upstream "$TARGET_BRANCH_SDK_SYNC"
 
-
-
 echo "[+] Cloning $TARGET_REPOSITORY_NAME_GO_SDK"
 cd $CLONE_DIR
 mkdir $TARGET_REPOSITORY_NAME_GO_SDK
 git clone --single-branch --branch "$TARGET_BRANCH_SDK_SYNC" "https://$USER_NAME:$API_TOKEN_GITHUB@github.com/$DESTINATION_REPOSITORY_USERNAME/$TARGET_REPOSITORY_NAME_GO_SDK.git" "$CLONE_DIR/$TARGET_REPOSITORY_NAME_GO_SDK"
 
+echo "[+] Update $TARGET_REPOSITORY_NAME_GO_SDK by snips"
 snips -f ./$TARGET_REPOSITORY_NAME_API_SPECS/2013-08-30/swagger/api_v2.0.json -t ./$TARGET_REPOSITORY_NAME_GO_SDK/template -o ./qingcloud-sdk-go/service/
-gofmt -w .
-
-cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_GO_SDK"
-
 
 echo "[+] Push $TARGET_REPOSITORY_NAME_GO_SDK to $TARGET_BRANCH_SDK_SYNC"
 cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_GO_SDK"
+
+echo "[+] Format go files"
+gofmt -w .
 
 echo "[+] Files that will be pushed"
 ls -la
@@ -105,7 +100,6 @@ echo "[+] Pushing git commit"
 git push "https://$USER_NAME:$API_TOKEN_GITHUB@github.com/$DESTINATION_REPOSITORY_USERNAME/$TARGET_REPOSITORY_NAME_GO_SDK.git" --set-upstream "$TARGET_BRANCH_SDK_SYNC"
 
 
-
 echo "[+] Cloning $TARGET_REPOSITORY_NAME_RUBY_SDK"
 cd $CLONE_DIR
 mkdir $TARGET_REPOSITORY_NAME_RUBY_SDK
@@ -113,11 +107,12 @@ git clone --single-branch --branch "$TARGET_BRANCH_SDK_SYNC" "https://$USER_NAME
 
 echo "[+] Update $TARGET_REPOSITORY_NAME_RUBY_SDK by snips"
 snips -f ./$TARGET_REPOSITORY_NAME_API_SPECS/2013-08-30/swagger/api_v2.0.json -t ./$TARGET_REPOSITORY_NAME_RUBY_SDK/template -o ./$TARGET_REPOSITORY_NAME_RUBY_SDK/lib/qingcloud/sdk/service/
-rufo ./lib/qingcloud/sdk/service/*
-
 
 echo "[+] Push $TARGET_REPOSITORY_NAME_RUBY_SDK to $TARGET_BRANCH_SDK_SYNC"
 cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_RUBY_SDK"
+
+echo "[+] Format ruby files"
+rufo ./lib/qingcloud/sdk/service/*
 
 echo "[+] Files that will be pushed"
 ls -la
