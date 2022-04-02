@@ -23,8 +23,8 @@ COMMIT_MESSAGE="${11}"
 
 ORIGIN_COMMIT="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 echo $ORIGIN_COMMIT
-# COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
-# COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
+COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
+COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 
 CLONE_DIR=$(mktemp -d)
 
@@ -113,7 +113,7 @@ echo "[+] Push $TARGET_REPOSITORY_NAME_RUBY_SDK to $TARGET_BRANCH_SDK_SYNC"
 cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_RUBY_SDK"
 
 echo "[+] Format ruby files"
-rufo ./lib/qingcloud/sdk/service/*
+# rufo ./lib/qingcloud/sdk/service/*
 
 echo "[+] Files that will be pushed"
 ls -la
