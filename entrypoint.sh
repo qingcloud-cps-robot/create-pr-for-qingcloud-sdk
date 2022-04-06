@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # if a command fails it stops the execution
+# set -e  # if a command fails it stops the execution
 set -u  # script fails if trying to access to an undefined variable
 
 echo "[+] Action start"
@@ -27,8 +27,7 @@ echo "origin message: $ORIGIN_COMMIT"
 COMMIT_MESSAGE="${COMMIT_MESSAGE/ORIGIN_COMMIT/$ORIGIN_COMMIT}"
 echo "commit message 1: $COMMIT_MESSAGE"
 
-COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
-echo "commit message 2: $COMMIT_MESSAGE"
+# COMMIT_MESSAGE="${COMMIT_MESSAGE/\$GITHUB_REF/$GITHUB_REF}"
 
 CLONE_DIR=$(mktemp -d)
 
