@@ -116,7 +116,7 @@ echo "[+] Push $TARGET_REPOSITORY_NAME_RUBY_SDK to $TARGET_BRANCH_SDK_SYNC"
 cd "$CLONE_DIR/$TARGET_REPOSITORY_NAME_RUBY_SDK"
 
 echo "[+] Format ruby files"
-# rufo ./lib/qingcloud/sdk/service/*
+rufo ./lib/qingcloud/sdk/service/*
 
 echo "[+] Files that will be pushed"
 ls -la
